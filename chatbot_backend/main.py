@@ -7,7 +7,15 @@ from google.cloud.dialogflow_v2.services.sessions import SessionsClient
 from google.cloud.dialogflow_v2.types import TextInput, QueryInput
 from google.oauth2 import service_account
 import os
+from .database import get_database, close_database
 import json
+
+# Import intent handlers (use package-relative imports)
+from .intents.placement_record_d import handle_placement_record
+from .intents.iiic_partners_d import handle_iiic_partners
+from .intents.merit_scholarship_rank_d import handle_merit_scholarship_rank
+from .intents.engineering_course_description_d import handle_engineering_course_description
+from .intents.hostel_fee_d import handle_hostel_fee
 
 # --- Authentication and Project Setup ---
 
@@ -28,11 +36,8 @@ except Exception as e:
     print(f"FATAL ERROR during credential loading: {e}")
     CREDENTIALS = None
 
-# Import data service
-try:
-    from data_service import retrieve_contextual_answer, load_knowledge_base 
-except ImportError:
-    from .data_service import retrieve_contextual_answer, load_knowledge_base
+# Import data service (package-relative)
+from .data_service import retrieve_contextual_answer, load_knowledge_base
 
 # --- FastAPI Setup ---
 
@@ -46,14 +51,31 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# --- Intent Handler Mapping ---
+INTENT_HANDLERS = {
+    'Placement_Record_D': handle_placement_record,
+    'IIIC_Partners_D': handle_iiic_partners,
+    'Merit_Scholarship_Rank_D': handle_merit_scholarship_rank,
+    'Engineering_Course_Description_D': handle_engineering_course_description,
+    'Hostel_Fee_D': handle_hostel_fee,
+}
+
 # --- FastAPI Startup Event ---
-@app.on_event("startup")
-def startup_event():
-    """Load the knowledge base data when the FastAPI application starts."""
-    print("Executing startup event: Loading knowledge base...")
-    load_knowledge_base()
 
 # --- Pydantic Models ---
+
+class Intent(BaseModel):
+    displayName: str = Field(alias='name')
+
+class QueryResult(BaseModel):
+    queryText: str
+    intent: Intent
+    languageCode: str
+    parameters: Dict[str, Any]
+
+class DialogflowESRequest(BaseModel):
+    responseId: str
+    queryResult: QueryResult
 
 class ChatRequest(BaseModel):
     text: str
@@ -103,11 +125,77 @@ def detect_intent_with_fallback(text: str):
         print(f"Dialogflow API error: {e}")
         return None, "System.Error"
 
+# --- Webhook Endpoint for Dynamic Intents ---
+
+@app.post("/webhook")
+async def dialogflow_webhook(request: DialogflowESRequest):
+    """
+    Handles Dialogflow webhook calls for dynamic intents
+    """
+    intent_name = request.queryResult.intent.displayName
+    parameters = request.queryResult.parameters
+    query_text = request.queryResult.queryText
+    language_code = request.queryResult.languageCode
+    
+    print(f"WEBHOOK: Intent: {intent_name}, Query: '{query_text}', Params: {parameters}")
+    
+    # Check if we have a handler for this dynamic intent
+    if intent_name in INTENT_HANDLERS:
+        try:
+            # Call the appropriate intent handler
+            response_text = await INTENT_HANDLERS[intent_name](parameters)
+            
+            # Add multilingual support if needed
+            if language_code != 'en':
+                multilingual_note = ""
+                if 'hi' in language_code:
+                    multilingual_note = "नमस्ते! (Hello!) महत्वपूर्ण जानकारी: " 
+                elif 'te' in language_code:
+                    multilingual_note = "నమస్కారం! (Hello!) ముఖ్యమైన సమాచారం: "
+                response_text = multilingual_note + response_text
+                
+        except Exception as e:
+            print(f"Error in intent handler {intent_name}: {e}")
+            response_text = f"I encountered an error while processing your request for {intent_name}. Please try again later."
+    else:
+        # Use local knowledge base as fallback
+        response_text = retrieve_contextual_answer(query_text, intent_name)
+        print(f"No specific handler for {intent_name}, using knowledge base")
+    
+    return {
+        "fulfillmentText": response_text
+    }
+
 # --- Endpoints ---
+@app.on_event("startup")
+async def startup_event():
+    """Load the knowledge base data and connect to MongoDB when the FastAPI application starts."""
+    print("Executing startup event: Loading knowledge base and connecting to MongoDB...")
+
+    # Test MongoDB connection
+    try:
+        db = await get_database()
+        print("✅ MongoDB connection successful!")
+    except Exception as e:
+        print(f"❌ MongoDB connection failed: {e}")
+
+    load_knowledge_base()
+    print("Intent handlers loaded:", list(INTENT_HANDLERS.keys()))
+
+# Add shutdown event
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Close MongoDB connection on shutdown"""
+    await close_database()
+
 
 @app.get("/")
 async def root():
-    return {"message": "Anurag University Chatbot Fulfillment (ES) is running!", "status": "OK"}
+    return {
+        "message": "Anurag University Chatbot Fulfillment (ES) is running!", 
+        "status": "OK",
+        "dynamic_intents": list(INTENT_HANDLERS.keys())
+    }
 
 @app.get("/health")
 async def health_check():
@@ -118,6 +206,7 @@ async def health_check():
     return {
         "status": "healthy" if CREDENTIALS else "no_credentials",
         "project_id": DIALOGFLOW_PROJECT_ID,
+        "dynamic_intents_loaded": len(INTENT_HANDLERS),
         "dialogflow_test": {
             "query": test_query,
             "response": dialogflow_response[:100] + "..." if dialogflow_response else "None",
@@ -163,15 +252,19 @@ async def chat_api(request: ChatRequest):
         language="en"
     )
 
+
 # --- Run the server ---
 if __name__ == "__main__":
     print("\nStarting Enhanced FastAPI Server for Anurag University Chatbot")
     print(f"Project: {DIALOGFLOW_PROJECT_ID}")
     print(f"Service Account: {CREDENTIALS.service_account_email if CREDENTIALS else 'None'}")
+    print(f"Dynamic Intents Loaded: {len(INTENT_HANDLERS)}")
     print("Server running on: http://127.0.0.1:8000")
     print("\nAvailable endpoints:")
     print("  GET  /health - Check server and Dialogflow status")
     print("  POST /chat   - Main chat endpoint")
+    print("  POST /webhook - Dialogflow webhook endpoint")
     print("  GET  /       - Root endpoint")
     
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+    # When invoked directly, make sure to reference the package module path
+    uvicorn.run("chatbot_backend.main:app", host="127.0.0.1", port=8000, reload=True)
