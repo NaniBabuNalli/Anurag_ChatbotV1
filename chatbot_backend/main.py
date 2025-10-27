@@ -222,7 +222,7 @@ async def process_query_directly(query_text: str) -> str:
         if any(keyword in query_upper for keyword in ['EEE', 'CSE', 'AI', 'CIVIL', 'MECHANICAL', 'ECE', 'PHARMACY', 'COURSE', 'PROGRAM', 'DETAILS']):
             course = extract_course_from_query(query_text)
             if course:
-                params = {'engineeringcourse': course, 'entranceexam': ''}
+                params = {'engineeringcourse': course, 'entranceexam': '', 'query_text': query_text}
                 return await handle_engineering_course_description(params)
             else:
                 return "Which engineering program are you interested in? Please specify the course name (e.g., EEE, CSE, AI, Civil, Mechanical, ECE, or B.Pharmacy)."
@@ -230,21 +230,24 @@ async def process_query_directly(query_text: str) -> str:
         # Hostel Fees
         elif any(keyword in query_lower for keyword in ['hostel', 'accommodation', 'room', 'fee', 'stay']):
             params = extract_hostel_params(query_text)
+            params['query_text'] = query_text
             return await handle_hostel_fee(params)
         
         # Placement Records
         elif any(keyword in query_lower for keyword in ['placement', 'job', 'recruitment', 'company', 'hire']):
             params = extract_placement_params(query_text)
+            params['query_text'] = query_text
             return await handle_placement_record(params)
         
         # Scholarship
         elif any(keyword in query_lower for keyword in ['scholarship', 'merit', 'rank', 'concession', 'fee waiver']):
             params = extract_scholarship_params(query_text)
+            params['query_text'] = query_text  # Add query_text for fallback parsing
             return await handle_merit_scholarship_rank(params)
         
         # IIIC Partners
         elif any(keyword in query_lower for keyword in ['partner', 'mou', 'industry', 'company', 'collaboration']):
-            params = {}
+            params = {'query_text': query_text}
             return await handle_iiic_partners(params)
         
     except Exception as e:
