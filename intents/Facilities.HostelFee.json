@@ -1,0 +1,42 @@
+{
+  "name": "Facilities.HostelFee",
+  "priority": 500000,
+  "webhookUsed": true,
+  "trainingPhrases": [
+    {
+      "parts": [
+        {
+          "text": "What are the hostel facilities available?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "How much is the hostel fee for male students?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "Do the hostels have AC rooms?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "నాకు హాస్టల్ ఫీజు తెలుసుకోవాలి"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "Hostel accommodation fee for 4 sharing with attached washroom"
+        }
+      ]
+    }
+  ]
+}

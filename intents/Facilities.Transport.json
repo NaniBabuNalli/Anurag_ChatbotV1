@@ -1,0 +1,42 @@
+{
+  "name": "Facilities.Transport",
+  "priority": 500000,
+  "webhookUsed": true,
+  "trainingPhrases": [
+    {
+      "parts": [
+        {
+          "text": "Tell me about the bus routes and transport."
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "How far is the university from Secunderabad railway station?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "I need the contact for transportation services."
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "బస్సు సౌకర్యం ఉందా?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "When do the buses leave the campus?"
+        }
+      ]
+    }
+  ]
+}

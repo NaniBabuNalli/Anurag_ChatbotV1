@@ -1,0 +1,42 @@
+{
+  "name": "Placements.Stats",
+  "priority": 500000,
+  "webhookUsed": true,
+  "trainingPhrases": [
+    {
+      "parts": [
+        {
+          "text": "What is the highest salary package?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "What is the average package?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "Can you give me the placement statistics for 2024-2025?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "ప్లేస్‌మెంట్ వివరాలు చెప్పండి"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "How many offers were made last year?"
+        }
+      ]
+    }
+  ]
+}

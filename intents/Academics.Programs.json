@@ -1,0 +1,42 @@
+{
+  "name": "Academics.Programs",
+  "priority": 500000,
+  "webhookUsed": true,
+  "trainingPhrases": [
+    {
+      "parts": [
+        {
+          "text": "What programs are offered in the School of Engineering?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "Tell me about the UG courses."
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "Do you offer M.Tech in Data Science?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "ఫార్మసీలో ఏ కోర్సులు ఉన్నాయి?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "What PhD subjects are available?"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "name": "Placements.Recruiters",
+  "priority": 500000,
+  "webhookUsed": true,
+  "trainingPhrases": [
+    {
+      "parts": [
+        {
+          "text": "Which companies visit the campus for placements?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "List of top recruiters"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "Do big companies like Amazon and JP Morgan hire from Anurag?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "रिक्रूटर कौन कौन हैं?"
+        }
+      ]
+    }
+  ]
+}

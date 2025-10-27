@@ -1,0 +1,63 @@
+{
+  "name": "Admissions.FeesQuery",
+  "priority": 500000,
+  "webhookUsed": true,
+  "trainingPhrases": [
+    {
+      "parts": [
+        {
+          "text": "What is the tuition fee for B.Tech CSE?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "How much does the MBA program cost?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "I need to know the tuition fees"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "Tell me about the fee structure for undergraduate courses."
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "What is the fee for Ph.D. full-time?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "తెలుగులో ఫీజు వివరాలు చెప్పండి"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "मुझे इंजीनियरिंग की फीस बतायें"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "B.Pharm course fee?"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "name": "Academics.Calendar",
+  "priority": 500000,
+  "webhookUsed": true,
+  "trainingPhrases": [
+    {
+      "parts": [
+        {
+          "text": "Where can I find the academic calendar?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "What are the semester start dates?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "Tell me about the B.Tech almanac for 2025-26."
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "Is the M.Pharm schedule available?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "అకడమిక్ క్యాలెండర్ ఎక్కడ ఉంది?"
+        }
+      ]
+    }
+  ]
+}

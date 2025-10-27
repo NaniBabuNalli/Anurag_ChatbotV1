@@ -1,0 +1,42 @@
+{
+  "name": "Admissions.Scholarships",
+  "priority": 500000,
+  "webhookUsed": true,
+  "trainingPhrases": [
+    {
+      "parts": [
+        {
+          "text": "What are the scholarships offered by the university?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "Do you have merit scholarships?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "Is there any financial aid for EAMCET rankers?"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "స్కాలర్‌షిప్‌ల గురించి తెలుసుకోవాలంటే"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "text": "Can I get a scholarship based on my JEE rank?"
+        }
+      ]
+    }
+  ]
+}
