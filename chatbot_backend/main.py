@@ -284,6 +284,9 @@ async def dialogflow_webhook(request: Request):
         query_text = query_result.get('queryText', '')
         language_code = query_result.get('languageCode', 'en')
         
+        # Add query_text to parameters so handlers can use it for fallback parsing
+        parameters['query_text'] = query_text
+        
         print(f"WEBHOOK: Intent: {intent_name}, Query: '{query_text}', Params: {parameters}")
         
         # Check if we have a handler for this dynamic intent
