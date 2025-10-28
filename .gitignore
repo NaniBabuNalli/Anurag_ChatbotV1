@@ -10,3 +10,4 @@ venv/
 .idea/
 *.log
 .DS_Store
+auth_key.json
