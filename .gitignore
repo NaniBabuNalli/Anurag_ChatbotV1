@@ -11,3 +11,6 @@ venv/
 *.log
 .DS_Store
 auth_key.json
+Project_Report/
+reference paper/
+Unwanted/
