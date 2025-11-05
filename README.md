@@ -386,7 +386,7 @@ Response: {"message": "Chatbot Backend Running"}
 - Institution: Anurag University
 
 ### Project Guide
-Department of Computer Science and Engineering  
+Department of Artificial Intelligence
 Anurag University
 
 ---
